@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}User Management - Admin{% endblock %}
+{% block content %}
+<h2>User Management</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Is Admin</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('admin_users_edit', user_id=user.id) }}" class="btn btn-sm btn-primary">Edit</a>
+        {% if user.id != current_user.id %}
+        <form action="{{ url_for('admin_users_delete', user_id=user.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete user?');">
+          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

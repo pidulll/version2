@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Car Management - Admin{% endblock %}
+{% block content %}
+<h2>Car Management</h2>
+
+<h4>Add New Car</h4>
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('admin_cars') }}">
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <input name="make" type="text" class="form-control" placeholder="Make (e.g. Toyota)" required>
+    </div>
+    <div class="col-md-3 mb-3">
+      <input name="model" type="text" class="form-control" placeholder="Model (e.g. Corolla)" required>
+    </div>
+    <div class="col-md-2 mb-3">
+      <input name="year" type="number" class="form-control" placeholder="Year" required min="1900" max="2100">
+    </div>
+    <div class="col-md-2 mb-3">
+      <label for="price_per_day" class="form-label">Price per Day (in Pesos)</label>
+    <input name="price_per_day" type="number" step="0.01" class="form-control" placeholder="Enter price in Pesos" required />
+<div class="col-md-12 mb-3">
+    <label for="image_url" class="form-label">Image URL (optional)</label>
+    <input name="image_url" type="url" class="form-control" placeholder="Image URL" />
+  </div>
+    <div class="col-md-12 mb-3">
+    <label for="image_file" class="form-label">Or Upload Image File</label>
+    <input id="image_file" name="image_file" type="file" class="form-control" accept="image/*" />
+  </div>
+    <div class="col-md-12 mb-3">
+      <textarea name="description" class="form-control" placeholder="Description"></textarea>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success">Add Car</button>
+</form>
+
+<hr>
+
+<h4>Existing Cars</h4>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Make</th>
+      <th>Model</th>
+      <th>Year</th>
+      <th>Price/Day</th>
+      <th>Active</th>
+      <th>Image</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for car in cars %}
+    <tr>
+      <td>{{ car.id }}</td>
+      <td>{{ car.make }}</td>
+      <td>{{ car.model }}</td>
+      <td>{{ car.year }}</td>
+      <td>₱{{ "%.2f"|format(car.price_per_day) }}</td>
+      <td>{{ 'Yes' if car.active else 'No' }}</td>
+      <td>
+        {% if car.image_url %}
+        <img src="{{ url_for('static', filename=car.image_url) }}" alt="Car Image" style="height:50px;" />
+        {% else %}
+        <span>No Image</span>
+        {% endif %}
+      </td>
+      <td>
+        <a href="{{ url_for('admin_cars_edit', car_id=car.id) }}" class="btn btn-sm btn-primary">Edit</a>
+        <form action="{{ url_for('admin_cars_delete', car_id=car.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete car?');">
+          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

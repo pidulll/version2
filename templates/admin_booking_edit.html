@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Edit Booking - Admin{% endblock %}
+{% block content %}
+<h2>Edit Booking (ID {{ booking.id }})</h2>
+<form method="POST" action="{{ url_for('admin_bookings_edit', booking_id=booking.id) }}">
+  <div class="mb-3">
+    <label class="form-label">User</label>
+    <input type="text" class="form-control" value="{{ booking.renter.username }}" disabled>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Car</label>
+    <input type="text" class="form-control" value="{{ booking.car.make }} {{ booking.car.model }}" disabled>
+  </div>
+  <div class="mb-3">
+    <label for="status" class="form-label">Status</label>
+    <select id="status" name="status" class="form-select" required>
+      <option value="Confirmed" {% if booking.status == 'Confirmed' %}selected{% endif %}>Confirmed</option>
+      <option value="Cancelled" {% if booking.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+      <option value="Completed" {% if booking.status == 'Completed' %}selected{% endif %}>Completed</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Update Booking</button>
+  <a href="{{ url_for('admin_bookings') }}" class="btn btn-link">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ car.make }} {{ car.model }} Details - Car Rental{% endblock %}
+{% block content %}
+<h2>{{ car.make }} {{ car.model }} ({{ car.year }})</h2>
+<div class="row">
+  <div class="col-md-6">
+    {% if car.image_url %}
+  <img src="{{ url_for('static', filename=car.image_url) }}" alt="Car Image" 
+       style="width: 400px; height: 300px; object-fit: cover;" />
+    {% else %}
+  <img src="{{ url_for('static', filename='img/default-car.jpg') }}" alt="Default Car Image" 
+       style="width: 400px; height: 300px; object-fit: cover;" />
+    {% endif %}
+  </div>
+  <div class="col-md-6">
+    <p>{{ car.description|default('No description available.') }}</p>
+    <p>Price per day: ₱{{ car.price_per_day | round(2) }}</p>
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('booking', car_id=car.id) }}" class="btn btn-success">Book Now</a>
+    {% else %}
+      <p><a href="{{ url_for('login') }}">Log in</a> to book this car.</p>
+    {% endif %}
+  </div>
+</div>
+<a href="{{ url_for('home') }}" class="btn btn-link mt-3">Back to home</a>
+{% endblock %}

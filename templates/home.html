@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Home - Car Rental{% endblock %}
+{% block content %}
+<h2>Available Cars for Rent</h2>
+<div class="row">
+  {% if cars %}
+    {% for car in cars %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        {% if car.image_url %}
+          <img src="{{ url_for('static', filename=car.image_url) }}" alt="Car Image" />
+        {% else %}
+          <img src="{{ url_for('static', filename='img/default-car.jpg') }}" alt="Default Image" />
+        {% endif %}
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ car.make }} {{ car.model }} ({{car.year}})</h5>
+          <p class="card-text">{{ car.description|default("No description.")|truncate(100, True, '...') }}</p>
+          <p>Price per day: ₱{{ car.price_per_day | round(2) }}</p>
+          <a href="{{ url_for('car_details', car_id=car.id) }}" class="btn btn-primary mt-auto">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p>No cars available currently.</p>
+  {% endif %}
+</div>
+{% endblock %}
+

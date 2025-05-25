@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Booking - {{ car.make }} {{ car.model }}{% endblock %}
+{% block content %}
+<h2>Book {{ car.make }} {{ car.model }}</h2>
+<form method="POST" action="{{ url_for('booking', car_id=car.id) }}">
+  <div class="mb-3">
+    <label for="start_date" class="form-label">Start Date</label>
+    <input id="start_date" name="start_date" type="date" class="form-control" required />
+  </div>
+  <div class="mb-3">
+    <label for="end_date" class="form-label">End Date</label>
+    <input id="end_date" name="end_date" type="date" class="form-control" required />
+  </div>
+  <button type="submit" class="btn btn-primary">Confirm Booking</button>
+  <a href="{{ url_for('car_details', car_id=car.id) }}" class="btn btn-link">Cancel</a>
+</form>
+{% endblock %}

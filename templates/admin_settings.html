@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}System Settings - Admin{% endblock %}
+{% block content %}
+<h2>System Settings</h2>
+<form method="POST" action="{{ url_for('admin_settings') }}">
+  <div class="mb-3">
+    <label for="default_rental_rate" class="form-label">Default Rental Rate</label>
+    <input id="default_rental_rate" name="default_rental_rate" type="text" value="{{ default_rental_rate }}" class="form-control" placeholder="e.g. 50.00" />
+  </div>
+  <button type="submit" class="btn btn-primary">Save Settings</button>
+</form>
+{% endblock %}
